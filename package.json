@@ -1,0 +1,32 @@
+{
+	"name": "node.jshit",
+	"version": "0.0.1",
+  "author": {
+    "name": "xunuo",
+    "email": "i@xunuo.com",
+    "url": "http://www.xunuo.com"
+  },
+  "contributors": [ 
+     { "name": "dnq", "email": "none@none" }, 
+     { "name": "zzy", "email": "none@none" },
+     { "name": "zxx", "email": "none@none" }
+  ],
+  "keywords": [
+    "jshint",
+    "js check tool",
+    "jslint",
+    "jshit"
+  ],
+  "description": "jshint ext",
+  "homepage": "http://www.xunuo.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xunuo/node.jshit.git"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
