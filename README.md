@@ -1,0 +1,4 @@
+jshit
+=====
+
+jshint ext
