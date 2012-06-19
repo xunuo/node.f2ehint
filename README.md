@@ -1,4 +1,4 @@
 jshit
 =====
 
-jshint ext
+改造过的jshint
