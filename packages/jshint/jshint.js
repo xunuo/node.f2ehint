@@ -1081,7 +1081,7 @@ var JSHINT = (function () {
 
             if (at >= 0)
 				// 前端定制 @ 20120405
-				warningAt("Mixed spaces and tabs.", line, at + 1);
+				// warningAt("Mixed spaces and tabs.", line, at + 1);
             s = s.replace(/\t/g, tab);
             at = s.search(cx);
 
