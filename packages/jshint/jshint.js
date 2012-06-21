@@ -1087,17 +1087,17 @@ var JSHINT = (function () {
 
             if (at >= 0)
 				// 前端定制 @ 20120405
-                warningAt("Unsafe character.", line, at);
+                // warningAt("Unsafe character.", line, at);
 
             if (option.maxlen && option.maxlen < s.length)
 				// 前端定制 @ 20120405
-                warningAt("Line too long.", line, s.length);
+                // warningAt("Line too long.", line, s.length);
 
             // Check for trailing whitespaces
             tw = option.trailing && s.match(/^(.*?)\s+$/);
             if (tw && !/^\s+$/.test(s)) {
 				// 前端定制 @ 20120405
-                warningAt("Trailing whitespace.", line, tw[1].length + 1);
+                // warningAt("Trailing whitespace.", line, tw[1].length + 1);
             }
             return true;
         }
