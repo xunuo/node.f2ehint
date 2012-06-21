@@ -1,6 +1,6 @@
 {
-	"name": "node.jshit",
-	"version": "0.0.2",
+	"name": "node.f2ehint",
+	"version": "0.0.1",
   "author": {
     "name": "xunuo",
     "email": "i@xunuo.com",
@@ -12,16 +12,18 @@
      { "name": "zxx", "email": "none@none" }
   ],
   "keywords": [
+    "node.f2ehint",
+    "csshint",
     "jshint",
     "js check tool",
     "jslint",
     "jshit"
   ],
-  "description": "jshint ext",
+  "description": "custom css/js hint",
   "homepage": "http://www.xunuo.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xunuo/node.jshit.git"
+    "url": "https://github.com/xunuo/node.f2ehint.git"
   },
   "dependencies": {},
   "devDependencies": {},

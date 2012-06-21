@@ -1,4 +1,4 @@
-jshit
+f2ehint
 =====
 
-改造过的jshint
+定制过的 css/js hint 检测规则
