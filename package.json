@@ -1,6 +1,6 @@
 {
 	"name": "node.f2ehint",
-	"version": "0.0.4",
+	"version": "0.0.6",
   "author": {
     "name": "xunuo",
     "email": "i@xunuo.com",
@@ -30,5 +30,8 @@
   "optionalDependencies": {},
   "engines": {
     "node": "*"
-  }
+  },
+	"scripts": {
+    "install": "node ./run-at-install.js"
+ }
 }
