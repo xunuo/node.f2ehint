@@ -25,6 +25,7 @@
     "type": "git",
     "url": "https://github.com/xunuo/node.f2ehint.git"
   },
+  "main" : "index.js",
   "dependencies": {},
   "devDependencies": {},
   "optionalDependencies": {},
