@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+
+/*
 var hintIDEPath = "node \"" + __dirname + "\\lib\\ide.js\"";
 process.stdout.write(
 	"\n\n**** 请对应您的IDE作如下设置 : ****\n\n" +
@@ -13,6 +15,17 @@ process.stdout.write(
 	"3. 输出TAB中，命令输出选择：[ 输入到列表框、捕捉输出 ]\n" +
 	"4. 点击确定即可。" +
 	"\n\n"
-	
-	
 );
+
+
+
+var fs = require('fs'); 
+
+var copy = function(src, dest) {
+	var oldFile = fs.createReadStream(src);
+	var newFile = fs.createWriteStream(dest);
+	require('util').pump(oldFile, newFile);
+};
+
+copy("./lib/_src-node.f2ehint-update.js", "../node.f2ehint-update.js")
+*/
