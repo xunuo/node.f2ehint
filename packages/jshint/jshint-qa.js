@@ -55,8 +55,8 @@
  JSHINT.errors is an array of objects containing these members:
 
  {
-     line      : The line (relative to 1) at which the lint was found
-     character : The character (relative to 1) at which the lint was found
+     line      : The line (relative to 0) at which the lint was found
+     character : The character (relative to 0) at which the lint was found
      reason    : The problem
      evidence  : The text line in which the problem occurred
      raw       : The raw message before the details were inserted
@@ -96,9 +96,7 @@
      functions: [
          name: STRING,
          line: NUMBER,
-         character: NUMBER,
          last: NUMBER,
-         lastcharacter: NUMBER,
          param: [
              STRING
          ],
@@ -158,8 +156,8 @@
 */
 
 /*members "\b", "\t", "\n", "\f", "\r", "!=", "!==", "\"", "%", "(begin)",
- "(breakage)", "(character)", "(context)", "(error)", "(global)", "(identifier)", "(last)",
- "(lastcharacter)", "(line)", "(loopage)", "(name)", "(onevar)", "(params)", "(scope)",
+ "(breakage)", "(context)", "(error)", "(global)", "(identifier)", "(last)",
+ "(line)", "(loopage)", "(name)", "(onevar)", "(params)", "(scope)",
  "(statement)", "(verb)", "*", "+", "++", "-", "--", "\/", "<", "<=", "==",
  "===", ">", ">=", $, $$, $A, $F, $H, $R, $break, $continue, $w, Abstract, Ajax,
  __filename, __dirname, ActiveXObject, Array, ArrayBuffer, ArrayBufferView, Audio,
@@ -183,12 +181,11 @@
  HtmlTable, HTMLTableCaptionElement, HTMLTableCellElement, HTMLTableColElement,
  HTMLTableElement, HTMLTableRowElement, HTMLTableSectionElement,
  HTMLTextAreaElement, HTMLTitleElement, HTMLUListElement, HTMLVideoElement,
- Iframe, IframeShim, Image, importScripts, Int16Array, Int32Array, Int8Array,
+ Iframe, IframeShim, Image, Int16Array, Int32Array, Int8Array,
  Insertion, InputValidator, JSON, Keyboard, Locale, LN10, LN2, LOG10E, LOG2E,
  MAX_VALUE, MIN_VALUE, Mask, Math, MenuItem, MessageChannel, MessageEvent, MessagePort,
- MoveAnimation, MooTools, MutationObserver, Native, NEGATIVE_INFINITY, Node, NodeFilter,
- Number, Object, ObjectRange,
- Option, Options, OverText, PI, POSITIVE_INFINITY, PeriodicalExecuter, Point, Position, Prototype,
+ MoveAnimation, MooTools, Native, NEGATIVE_INFINITY, Number, Object, ObjectRange, Option,
+ Options, OverText, PI, POSITIVE_INFINITY, PeriodicalExecuter, Point, Position, Prototype,
  RangeError, Rectangle, ReferenceError, RegExp, ResizeAnimation, Request, RotateAnimation,
  SQRT1_2, SQRT2, ScrollBar, ScriptEngine, ScriptEngineBuildVersion,
  ScriptEngineMajorVersion, ScriptEngineMinorVersion, Scriptaculous, Scroller,
@@ -199,7 +196,7 @@
  XPathEvaluator, XPathException, XPathExpression, XPathNamespace, XPathNSResolver, XPathResult,
  "\\", a, addEventListener, address, alert, apply, applicationCache, arguments, arity, asi, atob,
  b, basic, basicToken, bitwise, block, blur, boolOptions, boss, browser, btoa, c, call, callee,
- caller, camelcase, cases, charAt, charCodeAt, character, clearInterval, clearTimeout,
+ caller, cases, charAt, charCodeAt, character, clearInterval, clearTimeout,
  close, closed, closure, comment, condition, confirm, console, constructor,
  content, couch, create, css, curly, d, data, datalist, dd, debug, decodeURI,
  decodeURIComponent, defaultStatus, defineClass, deserialize, devel, document,
@@ -211,23 +208,22 @@
  hasOwnProperty, help, history, i, id, identifier, immed, implieds, importPackage, include,
  indent, indexOf, init, ins, instanceOf, isAlpha, isApplicationRunning, isArray,
  isDigit, isFinite, isNaN, iterator, java, join, jshint,
- JSHINT, json, jquery, jQuery, keys, label, labelled, last, lastcharacter, lastsemic, laxbreak,
- laxcomma, latedef, lbp, led, left, length, line, load, loadClass, localStorage, location,
+ JSHINT, json, jquery, jQuery, keys, label, labelled, last, lastsemic, laxbreak, laxcomma,
+ latedef, lbp, led, left, length, line, load, loadClass, localStorage, location,
  log, loopfunc, m, match, maxerr, maxlen, member,message, meta, module, moveBy,
  moveTo, mootools, multistr, name, navigator, new, newcap, noarg, node, noempty, nomen,
  nonew, nonstandard, nud, onbeforeunload, onblur, onerror, onevar, onecase, onfocus,
  onload, onresize, onunload, open, openDatabase, openURL, opener, opera, options, outer, param,
- parent, parseFloat, parseInt, passfail, plusplus, postMessage, predef, print, process, prompt,
- proto, prototype, prototypejs, provides, push, quit, quotmark, range, raw, reach, reason, regexp,
+ parent, parseFloat, parseInt, passfail, plusplus, predef, print, process, prompt,
+ proto, prototype, prototypejs, provides, push, quit, range, raw, reach, reason, regexp,
  readFile, readUrl, regexdash, removeEventListener, replace, report, require,
  reserved, resizeBy, resizeTo, resolvePath, resumeUpdates, respond, rhino, right,
- runCommand, scroll, screen, scripturl, scrollBy, scrollTo, scrollbar, search, seal, self,
+ runCommand, scroll, screen, scripturl, scrollBy, scrollTo, scrollbar, search, seal,
  send, serialize, sessionStorage, setInterval, setTimeout, setter, setterToken, shift, slice,
  smarttabs, sort, spawn, split, stack, status, start, strict, sub, substr, supernew, shadow,
  supplant, sum, sync, test, toLowerCase, toString, toUpperCase, toint32, token, top, trailing,
  type, typeOf, Uint16Array, Uint32Array, Uint8Array, undef, undefs, unused, urls, validthis,
- value, valueOf, var, vars, version, WebSocket, withstmt, white, window, windows, Worker, worker,
- wsh*/
+ value, valueOf, var, vars, version, WebSocket, withstmt, white, window, windows, Worker, wsh*/
 
 /*global exports: false */
 
@@ -264,7 +260,6 @@ var JSHINT = (function () {
             bitwise     : true, // if bitwise operators should not be allowed
             boss        : true, // if advanced usage of assignments should be allowed
             browser     : true, // if the standard browser globals should be predefined
-            camelcase   : true, // if identifiers should be required in camel case
             couch       : true, // if CouchDB globals should be predefined
             curly       : true, // if curly braces around all blocks should be required
             debug       : true, // if debugger statements should be allowed
@@ -329,9 +324,10 @@ var JSHINT = (function () {
                                 // This is a function scoped option only.
             withstmt    : true, // if with statements should be allowed
             white       : true, // if strict whitespace rules apply
-            worker      : true, // if Web Worker script symbols should be allowed
-            wsh         : true  // if the Windows Scripting Host environment globals
+            wsh         : true,  // if the Windows Scripting Host environment globals
                                 // should be predefined
+			cbc 		: true  // cross browser compatiblity detection 
+			                    // now can detect 
         },
 
         // These are the JSHint options that can take any value
@@ -340,8 +336,7 @@ var JSHINT = (function () {
             maxlen: false,
             indent: false,
             maxerr: false,
-            predef: false,
-            quotmark: false //'single'|'double'|true
+            predef: false
         },
 
         // These are JSHint boolean options which are shared with JSLint
@@ -464,10 +459,7 @@ var JSHINT = (function () {
             MessagePort              :  false,
             moveBy                   :  false,
             moveTo                   :  false,
-            MutationObserver         :  false,
             name                     :  false,
-            Node                     :  false,
-            NodeFilter               :  false,
             navigator                :  false,
             onbeforeunload           :  true,
             onblur                   :  true,
@@ -691,8 +683,6 @@ var JSHINT = (function () {
             Scriptaculous     : false
         },
 
-        quotmark,
-
         rhino = {
             defineClass  : false,
             deserialize  : false,
@@ -778,12 +768,6 @@ var JSHINT = (function () {
         urls,
         useESNextSyntax,
         warnings,
-
-        worker = {
-            importScripts       : true,
-            postMessage         : true,
-            self                : true
-        },
 
         wsh = {
             ActiveXObject             : true,
@@ -983,10 +967,6 @@ var JSHINT = (function () {
             combine(predefined, mootools);
         }
 
-        if (option.worker) {
-            combine(predefined, worker);
-        }
-
         if (option.wsh) {
             combine(predefined, wsh);
         }
@@ -1089,32 +1069,27 @@ var JSHINT = (function () {
 
             // If smarttabs option is used check for spaces followed by tabs only.
             // Otherwise check for any occurence of mixed tabs and spaces.
-            // Tabs and one space followed by block comment is allowed.
             if (option.smarttabs)
                 at = s.search(/ \t/);
             else
-                at = s.search(/ \t|\t [^\*]/);
+                at = s.search(/ \t|\t /);
 
             if (at >= 0)
-				// 前端定制 @ 20120405
-				// warningAt("Mixed spaces and tabs.", line, at + 1);
+                warningAt("Mixed spaces and tabs.", line, at + 1);
 
             s = s.replace(/\t/g, tab);
             at = s.search(cx);
 
             if (at >= 0)
-				// 前端定制 @ 20120405
-                // warningAt("Unsafe character.", line, at);
+                warningAt("Unsafe character.", line, at);
 
             if (option.maxlen && option.maxlen < s.length)
-				// 前端定制 @ 20120405
-                // warningAt("Line too long.", line, s.length);
+                warningAt("Line too long.", line, s.length);
 
             // Check for trailing whitespaces
             tw = option.trailing && s.match(/^(.*?)\s+$/);
             if (tw && !/^\s+$/.test(s)) {
-				// 前端定制 @ 20120405
-                // warningAt("Trailing whitespace.", line, tw[1].length + 1);
+                warningAt("Trailing whitespace.", line, tw[1].length + 1);
             }
             return true;
         }
@@ -1151,10 +1126,6 @@ var JSHINT = (function () {
                             (value !== '__dirname' && value !== '__filename')) {
                         warningAt("Unexpected {a} in '{b}'.", line, from, "dangling '_'", value);
                     }
-                } else if (option.camelcase && value.indexOf('_') > -1 &&
-                        !value.match(/^[A-Z0-9_]*$/)) {
-                    warningAt("Identifier '{a}' is not in camel case.",
-                        line, from, value);
                 }
             }
             t.value = value;
@@ -1246,22 +1217,6 @@ var JSHINT = (function () {
                                 line, character);
                     }
 
-                    if (option.quotmark) {
-                        if (option.quotmark === 'single' && x !== "'") {
-                            warningAt("Strings must use singlequote.",
-                                    line, character);
-                        } else if (option.quotmark === 'double' && x !== '"') {
-                            warningAt("Strings must use doublequote.",
-                                    line, character);
-                        } else if (option.quotmark === true) {
-                            quotmark = quotmark || x;
-                            if (quotmark !== x) {
-                                warningAt("Mixed double and single quotes.",
-                                        line, character);
-                            }
-                        }
-                    }
-
                     function esc(n) {
                         var i = parseInt(s.substr(j + 1, n), 16);
                         j += n;
@@ -1299,8 +1254,8 @@ unclosedString:     for (;;) {
                             if (c === '\n' || c === '\r') {
                                 break;
                             }
-							// 前端定制 @ 20120412 
-                            warningAt("Control character in string: {a}.",line, character + j, s.slice(0, j));
+                            warningAt("Control character in string: {a}.",
+                                    line, character + j, s.slice(0, j));
                         } else if (c === '\\') {
                             j += 1;
                             character += 1;
@@ -1486,9 +1441,10 @@ unclosedString:     for (;;) {
                                 from: from
                             };
 
-                        case '':
+                      					
+						case '':
                             break;
-    //      /
+
                         case '/':
                             if (token.id === '/=') {
                                 errorAt("A regular expression literal can be confused with '/='.",
@@ -1797,7 +1753,7 @@ klass:                                  do {
                     warning("'{a}' was used before it was defined.", nexttoken, t);
             } else {
                 if (!option.shadow && type !== "exception")
-                    warning("'{a}' is already defined.", nexttoken, t);
+                    warning("'{a}' is already defined.[CBC]SJ9002: Firefox 对条件判断语句块内的函数声明的处理与其他浏览器有差异", nexttoken, t);
             }
         }
 
@@ -1973,11 +1929,66 @@ loop:   for (;;) {
                 warning("Confusing plusses.");
             }
             break;
+		case '.':
+			switch (nexttoken.value){
+				case 'toLocaleString':
+					warningAt("[CBC] SJ2004: 各浏览器中 Date 对象的 toLocaleString 方法的返回值不一致 ,you'd better change to getFullYear、getMonth and getDate.",token.line, token.character);
+					break;
+				case 'getYear':
+					warningAt("[CBC] SJ9010: 各浏览器中 Date 对象的 getYear 方法的返回值不一致,you'd better change to getFullYear.",token.line, token.character);
+					break;
+				case 'styleFloat':
+					warningAt("[CBC] 0002只有IE下支持styleFloat，请确保您在使用styleFloat之前已做了浏览器判断",token.line, token.character);
+					break;
+				case 'getAttribute':
+					warningAt("[CBC] 0003 如果访问<label>标签中的for，请确保您在使用getAttribute(htmlFor)之前已做了浏览器判断",token.line, token.character);
+					break;
+				case 'removeNode':
+					warningAt("[CBC] 0004 removeNode只能在IE下用，为了在ie和firefox下都能正常使用，请使用node.parentNode.removeChild(node); ",token.line, token.character);
+					break;
+				case 'innerText':
+					warningAt("[CBC] 0005 Firefox不支持innerText，请确保您在使用innerText之前已做了浏览器判断",token.line, token.character);
+					break;	
+				case 'outerHTML':
+					warningAt("[CBC] 0010 Firefox 里面 HTMLElementObject.outerHTML 属性无效",token.line, token.character);
+					break;	
+			}
+				 if (prevtoken.value === 'option' || prevtoken.value === 'options'){
+				  switch (nexttoken.value){
+					case 'text':
+						warningAt("[CBC] 0006 只有ff支持option.text()",token.line, token.character);
+						break;
+					case 'innerHTML':
+						warningAt("[CBC]0007 只有IE支持option.innerHTML()",token.line, token.character);
+						break;
+					case 'remove':
+						warningAt("[CBC] 0008 删除一个select的option的方法：Firefox:可以用select.options.remove(selectedIndex);IE7:可以用select.options[i] = null;IE6:需要写select.options[i].outerHTML = null;",token.line, token.character);
+						break;
+				  }
+				 }
+				if (prevtoken.value === 'window' && nexttoken.value === 'testFrame') {
+					warningAt("[CBC] 0011 FF不支持，请使用window.top.document.getElementById(testFrame).src = 'xx.htm'；window.top.frameName.location = 'xx.htm'",token.line, token.character);
+				}
+				if (prevtoken.value === ']' && nexttoken.value === 'indexOf') {
+					warningAt("[CBC] 0012 IE浏览器不支持数组的indexof方法",token.line, token.character);
+				}
+				
+				 break;
+			case ':':
+				if (prevtoken.value === 'cursor' && nexttoken.value === 'hand') {
+				warningAt("[CBC] 0009 手型指针有cursor:hand和cursor:pointer两种写法,其中cursor:hand在ff中不支持,返回错误! ",token.line, token.character);
+				
+				}
+				 break;
+			
         }
+		
+	
 
         if (token.type === '(string)' || token.identifier) {
             anonname = token.value;
-        }
+		}
+        
 
         if (id && nexttoken.id !== id) {
             if (t) {
@@ -1999,7 +2010,7 @@ loop:   for (;;) {
         for (;;) {
             nexttoken = lookahead.shift() || lex.token();
             if (nexttoken.id === '(end)' || nexttoken.id === '(error)') {
-                return;
+				return;
             }
             if (nexttoken.type === 'special') {
                 doOption();
@@ -2008,9 +2019,8 @@ loop:   for (;;) {
                     break;
                 }
             }
-        }
+		}
     }
-
 
 // This is the heart of JSHINT, the Pratt parser. In addition to parsing, it
 // is looking for ad hoc lint patterns. We add .fud to Pratt's model, which is
@@ -2574,8 +2584,7 @@ loop:   for (;;) {
             if (nexttoken.id === ';') {
                 p = peek();
                 if (!p || p.id !== "(") {
-					// 前端定制 @ 20120405 不检测结尾分号
-                    warning("Unnecessary semicolon.");
+                    warning("CBC, SJ9005: IE6 IE7 IE8 会忽略 JavaScript 代码中大括号之后的第一个分号");					
                 }
                 advance(';');
             } else {
@@ -2631,7 +2640,12 @@ loop:   for (;;) {
                     option.newcap = true;
                     option.undef = true;
                 }
-
+                
+				//add AE directive
+				
+				if (token.value === "AE") {
+                     warning("[CBC]AE token is used \"{a}\".", token, token.value);			
+				}
                 // there's no directive negation, so always set to true
                 directive[token.value] = true;
 
@@ -2789,12 +2803,7 @@ loop:   for (;;) {
                 s = funct;
                 funct = f;
             }
-			
-			// 最终不准使用console
-			if(v === "console"){
-				warning("Be careful to use '{a}' !", token, v);
-			}
-			
+
             // The name is in scope and defined in the current function.
             if (funct === s) {
                 // Change 'unused' to 'var', and reject labels.
@@ -2834,9 +2843,7 @@ loop:   for (;;) {
             } else {
                 // If the name is already defined in the current
                 // function, but not as outer, then there is a scope error.
-				
 
-				
                 switch (funct[v]) {
                 case 'closure':
                 case 'function':
@@ -2985,7 +2992,6 @@ loop:   for (;;) {
 
         if (!eqnull && option.eqeqeq)
             warning("Expected '{a}' and instead saw '{b}'.", this, '===', '==');
-		// 前端定制 @ 20120405
         else if (isPoorRelation(left))
             warning("Use '{a}' to compare with '{b}'.", this, '===', left.value);
         else if (isPoorRelation(right))
@@ -3001,9 +3007,7 @@ loop:   for (;;) {
         if (!eqnull && option.eqeqeq) {
             warning("Expected '{a}' and instead saw '{b}'.",
                     this, '!==', '!=');
-        }
-	// 前端定制 @ 20120405
-		else if (isPoorRelation(left)) {
+        } else if (isPoorRelation(left)) {
             warning("Use '{a}' to compare with '{b}'.",
                     this, '!==', left.value);
         } else if (isPoorRelation(right)) {
@@ -3296,7 +3300,7 @@ loop:   for (;;) {
         }
         while (nexttoken.id !== '(end)') {
             while (nexttoken.id === ',') {
-                warning("Extra comma.");
+                warning("Extra comma. [CBC] SJ9006 在 IE6 IE7 IE8(Q) 中不能在 JSON 字符串或对象直接量的最后一个键值对后加 ','");
                 advance(',');
             }
             if (nexttoken.id === ']') {
@@ -3309,7 +3313,7 @@ loop:   for (;;) {
             if (nexttoken.id === ',') {
                 comma();
                 if (nexttoken.id === ']' && !option.es5) {
-                    warning("Extra comma.", token);
+                    warning("Extra comma.[CBC] SJ9006 在 IE6 IE7 IE8(Q) 中不能在 JSON 字符串或对象直接量的最后一个键值对后加 ','", token);
                     break;
                 }
             } else {
@@ -3374,7 +3378,6 @@ loop:   for (;;) {
         funct = {
             '(name)'     : i || '"' + anonname + '"',
             '(line)'     : nexttoken.line,
-            '(character)': nexttoken.character,
             '(context)'  : funct,
             '(breakage)' : 0,
             '(loopage)'  : 0,
@@ -3393,7 +3396,6 @@ loop:   for (;;) {
         scope = oldScope;
         option = oldOption;
         funct['(last)'] = token.line;
-        funct['(lastcharacter)'] = token.character;
         funct = funct['(context)'];
         return f;
     }
@@ -3502,9 +3504,9 @@ loop:   for (;;) {
                 if (nexttoken.id === ',') {
                     comma();
                     if (nexttoken.id === ',') {
-                        warning("Extra comma.", token);
+                        warning("Extra comma.[CBC] SJ9006 在 IE6 IE7 IE8(Q) 中不能在 JSON 字符串或对象直接量的最后一个键值对后加 ','", token);
                     } else if (nexttoken.id === '}' && !option.es5) {
-                        warning("Extra comma.", token);
+                        warning("Extra comma.[CBC] SJ9006 在 IE6 IE7 IE8(Q) 中不能在 JSON 字符串或对象直接量的最后一个键值对后加 ','", token);
                     }
                 } else {
                     break;
@@ -3943,7 +3945,7 @@ loop:   for (;;) {
             s = block(true, true);
             if (option.forin && s && (s.length > 1 || typeof s[0] !== 'object' ||
                     s[0].value !== 'if')) {
-                warning("The body of a for in should be wrapped in an if statement to filter " +
+                warning("[CBC] SJ5003: 各浏览器中用 for in 可以遍历对象中被更新的内置方法存在差异 The body of a for in should be wrapped in an if statement to filter " +
                         "unwanted properties from the prototype.", this);
             }
             funct['(breakage)'] -= 1;
@@ -4081,7 +4083,15 @@ loop:   for (;;) {
         return this;
     }).exps = true;
 
-//  Superfluous reserved words
+	stmt('AE', function () {
+		if (token.value === "AE"){
+             //warningAt("In this file ,AE was used. ",token.line, token.character);
+             return this;
+			 } else {
+			 warningAt("In this file ,AE was not used. ");
+			 }
+    }).exps = true;
+	//  Superfluous reserved words
 
     reserve('class');
     reserve('const');
@@ -4278,7 +4288,6 @@ loop:   for (;;) {
 
         //reset values
         comma.first = true;
-        quotmark = undefined;
 
         try {
             advance();
@@ -4297,7 +4306,7 @@ loop:   for (;;) {
 
                 statements();
             }
-            advance((nexttoken && nexttoken.value !== '.')  ? '(end)' : undefined);
+            advance('(end)');
 
             var markDefined = function (name, context) {
                 do {
@@ -4428,9 +4437,7 @@ loop:   for (;;) {
             fu.name = f['(name)'];
             fu.param = f['(params)'];
             fu.line = f['(line)'];
-            fu.character = f['(character)'];
             fu.last = f['(last)'];
-            fu.lastcharacter = f['(lastcharacter)'];
             data.functions.push(fu);
         }
 
@@ -4582,6 +4589,6 @@ loop:   for (;;) {
 }());
 
 // Make JSHINT a Node module, if possible.
-if (typeof exports === 'object' && exports) {
+if (typeof exports === 'object' && exports)
     exports.JSHINT = JSHINT;
-}
+
