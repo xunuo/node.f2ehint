@@ -2980,7 +2980,10 @@ loop:   for (;;) {
     bitwise('|', 'bitor', 70);
     bitwise('^', 'bitxor', 80);
     bitwise('&', 'bitand', 90);
+    
+    
     relation('==', function (left, right) {
+    	/*
         var eqnull = option.eqnull && (left.value === 'null' || right.value === 'null');
 
         if (!eqnull && option.eqeqeq)
@@ -2990,11 +2993,12 @@ loop:   for (;;) {
             warning("Use '{a}' to compare with '{b}'.", this, '===', left.value);
         else if (isPoorRelation(right))
             warning("Use '{a}' to compare with '{b}'.", this, '===', right.value);
-
+			*/
         return this;
     });
     relation('===');
     relation('!=', function (left, right) {
+    	/*
         var eqnull = option.eqnull &&
                 (left.value === 'null' || right.value === 'null');
 
@@ -3010,6 +3014,7 @@ loop:   for (;;) {
             warning("Use '{a}' to compare with '{b}'.",
                     this, '!==', right.value);
         }
+      */
         return this;
     });
     relation('!==');
