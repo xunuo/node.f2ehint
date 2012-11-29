@@ -1,0 +1,4 @@
+csslint组件修改说明：
+
+1. display-property-grouping规则过滤了IE6的双margin bug修正(代码已提交至官方，等待接受)
+2. 增加了非官方的selector-max-approaching和selector-max两个插件，用来检测选择器数量是否超过4095
